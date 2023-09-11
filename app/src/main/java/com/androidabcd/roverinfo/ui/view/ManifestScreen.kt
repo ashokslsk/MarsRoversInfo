@@ -18,7 +18,8 @@ import com.androidabcd.roverinfo.ui.manifestlist.MarsRoverManifestViewModel
 @Composable
 fun ManifestScreen(
     roverName: String?,
-    marsRoverManifestViewModel: MarsRoverManifestViewModel
+    marsRoverManifestViewModel: MarsRoverManifestViewModel,
+    onClick: (roverName: String, sol: String) -> Unit
 ){
     val viewState by marsRoverManifestViewModel.roverManifestUiState.collectAsStateWithLifecycle()
 
@@ -30,7 +31,10 @@ fun ManifestScreen(
         when(val roverManifestUiState = viewState){
             RoverManifestUiState.Error -> Error()
             RoverManifestUiState.Loading -> Loading()
-            is RoverManifestUiState.Success -> manifestList(roverManifestModelList = roverManifestUiState.roverManifestUiModelList)
+            is RoverManifestUiState.Success -> manifestList(
+                roverManifestModelList = roverManifestUiState.roverManifestUiModelList,
+                roverName = roverName,
+                onClick = onClick )
         }
     }
 }

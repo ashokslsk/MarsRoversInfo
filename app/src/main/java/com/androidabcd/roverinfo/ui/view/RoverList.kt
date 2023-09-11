@@ -38,7 +38,7 @@ fun RoverList(
         LazyColumn{
             items(
                 count = roverUiModelList.size,
-                itemContent = { index->
+                itemContent = { index ->
                 Rover(
                     name = roverUiModelList[index].name,
                     img = roverUiModelList[index].img,
@@ -54,9 +54,9 @@ fun RoverList(
 @Preview
 @Composable
 fun RoverPreview(){
-    Rover("Perserverance", R.drawable.perseverance, "18 February 2021", "12.56 km"){
-
-    }
+//    Rover("Perserverance", R.drawable.perseverance, "18 February 2021", "12.56 km"){
+//
+//    }
 }
 @Composable
 fun Rover(
@@ -79,7 +79,7 @@ fun Rover(
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center
             )
-            Image(painter = painterResource(id = R.drawable.perseverance), contentDescription = null)
+            Image(painter = painterResource(id = img), contentDescription = null)
             Text(text = "Credit : NASA/JPL", fontSize = 8.sp)
             Text(text = "Landing Date : $landingDate", fontSize = 12.sp)
             Text(text = "Distance Travelled : $diatanceTravelled", fontSize = 12.sp)

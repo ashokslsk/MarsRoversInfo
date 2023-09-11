@@ -27,12 +27,22 @@ import com.androidabcd.roverinfo.domain.model.RoverManifestUiModel
 
 
 @Composable
-fun manifestList(roverManifestModelList: List<RoverManifestUiModel>) {
-    Surface(color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize()) {
-        LazyColumn(){
-            items(count = roverManifestModelList.size, itemContent = {index->
-                manifest(roverManifestModel = roverManifestModelList[index])
+fun manifestList(
+    roverManifestModelList: List<RoverManifestUiModel>,
+    roverName: String,
+    onClick: (roverName: String, sol: String) -> Unit
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        LazyColumn() {
+            items(count = roverManifestModelList.size, itemContent = { index ->
+                manifest(
+                    roverManifestModel = roverManifestModelList[index],
+                    roverName,
+                    onClick
+                )
             })
         }
 
@@ -47,18 +57,25 @@ fun manifestPreview() {
             sol = "4",
             earthDate = "2021 -03-05",
             photoNumber = "34"
-        )
+        ), roverName = "",
+        onClick = {_, _ -> }
+
     )
 }
 
 @Composable
-fun manifest(roverManifestModel: RoverManifestUiModel) {
+fun manifest(
+    roverManifestModel: RoverManifestUiModel,
+    roverName: String,
+    onClick: (roverName: String, sol: String) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .clickable {
                 //Click CTA
+                onClick(roverName, roverManifestModel.sol)
             }
 
     ) {

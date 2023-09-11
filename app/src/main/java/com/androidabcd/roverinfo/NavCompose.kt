@@ -9,8 +9,10 @@ import androidx.navigation.compose.rememberNavController
 import com.androidabcd.roverinfo.nav.Action
 import com.androidabcd.roverinfo.nav.Destinations.Home
 import com.androidabcd.roverinfo.nav.Destinations.Manifest
+import com.androidabcd.roverinfo.nav.Destinations.Photo
 import com.androidabcd.roverinfo.ui.theme.RoverInfoTheme
 import com.androidabcd.roverinfo.ui.view.ManifestScreen
+import com.androidabcd.roverinfo.ui.view.PhotoScreen
 import com.androidabcd.roverinfo.ui.view.RoverList
 
 /**
@@ -37,8 +39,14 @@ fun NavCompose(){
             composable(Manifest){ backStackEntry ->
                 ManifestScreen(
                     roverName = backStackEntry.arguments?.getString("roverName"),
-                    marsRoverManifestViewModel = hiltViewModel()
+                    marsRoverManifestViewModel = hiltViewModel(),
+                    onClick = {
+                        roverName, sol -> actions.photo(roverName, sol)
+                    }
                 )
+            }
+            composable(Photo){
+                PhotoScreen()
             }
         }
     }
