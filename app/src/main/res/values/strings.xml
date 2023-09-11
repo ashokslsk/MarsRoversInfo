@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RoverInfo</string>
+    <string name="error">ERROR LOADING</string>
+    <string name="loading">STILL LOADING</string>
+    <string name="sol">Sol: %s</string>
+    <string name="earth_date">Earth date: %s</string>
+    <string name="number_of_photos">Number of Photos: %s</string>
 </resources>

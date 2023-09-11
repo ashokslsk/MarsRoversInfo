@@ -1,8 +1,12 @@
 package com.androidabcd.roverinfo.ui.view
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.androidabcd.roverinfo.domain.model.RoverManifestUiState
+import com.androidabcd.roverinfo.ui.manifestlist.MarsRoverManifestViewModel
 
 /**
  * Created by Ashok Kumar Srinivas on 11/09/23 around 2:11 pm
@@ -13,13 +17,26 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ManifestScreen(
-    roverName: String?
+    roverName: String?,
+    marsRoverManifestViewModel: MarsRoverManifestViewModel
 ){
-    Text(text = "Manifest Screen $roverName")
+    val viewState by marsRoverManifestViewModel.roverManifestUiState.collectAsStateWithLifecycle()
+
+    if (roverName != null){
+        LaunchedEffect(Unit){
+            marsRoverManifestViewModel.getMarsRoverManifest(roverName)
+        }
+
+        when(val roverManifestUiState = viewState){
+            RoverManifestUiState.Error -> Error()
+            RoverManifestUiState.Loading -> Loading()
+            is RoverManifestUiState.Success -> manifestList(roverManifestModelList = roverManifestUiState.roverManifestUiModelList)
+        }
+    }
 }
 
 @Preview
 @Composable
 fun ManifestScreenPreview(){
-    ManifestScreen("Perserverance")
+//    ManifestScreen("Perserverance")
 }
