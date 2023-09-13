@@ -58,9 +58,7 @@ fun NavCompose(){
                 NavigationBar {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
-
                     items.forEach { screen->
-
                         NavigationBarItem(
                         icon = {
                             Icon(
@@ -95,12 +93,13 @@ fun NavCompose(){
             val modifier = Modifier.padding(innerPadding)
             NavHost(navController = navController, startDestination = Home) {
                 composable(Home) {
-                    RoverList() { roverName ->
+                    RoverList(modifier = modifier) { roverName ->
                         actions.manifest(roverName)
                     }
                 }
                 composable(Manifest) { backStackEntry ->
                     ManifestScreen(
+                        modifier = modifier,
                         roverName = backStackEntry.arguments?.getString("roverName"),
                         marsRoverManifestViewModel = hiltViewModel(),
                         onClick = { roverName, sol ->
@@ -110,13 +109,14 @@ fun NavCompose(){
                 }
                 composable(Photo) { backstackentry ->
                     PhotoScreen(
+                        modifier = modifier,
                         roverName = backstackentry.arguments?.getString("roverName"),
                         sol = backstackentry.arguments?.getString("sol"),
                         marsRoverPhotoViewModel = hiltViewModel()
                     )
                 }
                 composable(Saved) {
-                    photoListSavedScreen()
+                    photoListSavedScreen(modifier = modifier)
                 }
 
             }

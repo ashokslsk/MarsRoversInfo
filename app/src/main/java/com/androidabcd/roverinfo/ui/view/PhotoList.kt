@@ -26,8 +26,10 @@ import com.androidabcd.roverinfo.domain.model.RoverPhotoUiModel
  */
 
 @Composable
-fun PhotoList(roverPhotoUiModelList: List<RoverPhotoUiModel>){
-    Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()){
+fun PhotoList(
+    modifier: Modifier,
+    roverPhotoUiModelList: List<RoverPhotoUiModel>){
+    Surface(color = MaterialTheme.colorScheme.background, modifier = modifier.fillMaxSize()){
         LazyColumn{
             items(count = roverPhotoUiModelList.size, itemContent = {index ->
                 photo(roverPhotoUiModel = roverPhotoUiModelList[index])

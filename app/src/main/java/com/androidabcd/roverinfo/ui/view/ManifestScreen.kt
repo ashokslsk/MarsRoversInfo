@@ -3,6 +3,7 @@ package com.androidabcd.roverinfo.ui.view
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.androidabcd.roverinfo.domain.model.RoverManifestUiState
@@ -17,6 +18,7 @@ import com.androidabcd.roverinfo.ui.manifestlist.MarsRoverManifestViewModel
 
 @Composable
 fun ManifestScreen(
+    modifier: Modifier,
     roverName: String?,
     marsRoverManifestViewModel: MarsRoverManifestViewModel,
     onClick: (roverName: String, sol: String) -> Unit
@@ -32,6 +34,7 @@ fun ManifestScreen(
             RoverManifestUiState.Error -> Error()
             RoverManifestUiState.Loading -> Loading()
             is RoverManifestUiState.Success -> manifestList(
+                modifier = modifier,
                 roverManifestModelList = roverManifestUiState.roverManifestUiModelList,
                 roverName = roverName,
                 onClick = onClick )

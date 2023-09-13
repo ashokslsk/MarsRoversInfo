@@ -28,13 +28,14 @@ import com.androidabcd.roverinfo.domain.model.RoverManifestUiModel
 
 @Composable
 fun manifestList(
+    modifier: Modifier,
     roverManifestModelList: List<RoverManifestUiModel>,
     roverName: String,
     onClick: (roverName: String, sol: String) -> Unit
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         LazyColumn() {
             items(count = roverManifestModelList.size, itemContent = { index ->
