@@ -1,6 +1,7 @@
 package com.androidabcd.roverinfo.di
 
 import com.androidabcd.roverinfo.service.MarsRoverInfoService
+import com.androidabcd.roverinfo.service.MarsRoverPhotoService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,5 +20,9 @@ object AppModule {
     @Provides
     fun provideMarsRoverManifestService(): MarsRoverInfoService =
         MarsRoverInfoService.create()
+
+    @Provides
+    fun provideMarsRoverPhotoService(): MarsRoverPhotoService =
+        MarsRoverPhotoService.create()
 
 }
