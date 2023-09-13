@@ -1,6 +1,9 @@
 package com.androidabcd.roverinfo.nav
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.navigation.NavController
+import com.androidabcd.roverinfo.R
 import com.androidabcd.roverinfo.nav.Destinations.Home
 
 /**
@@ -13,6 +16,7 @@ object Destinations{
    const val Home = "home"
    const val Manifest = "manifest/{roverName}"
    const val Photo = "photo/{roverName}?sol={sol}"
+    const val Saved = "saved"
 }
 
 class Action(navController: NavController){
@@ -28,4 +32,13 @@ class Action(navController: NavController){
     val photo:(roverName: String, sol:String) -> Unit = {
         roverName, sol -> navController.navigate("photo/${roverName}?sol=${sol}ß")
     }
+}
+
+sealed class Screen(
+    val route: String,
+    @StringRes val resourceId: Int,
+    @DrawableRes val drawableId: Int,
+){
+    object Home: Screen("home", R.string.rover, R.drawable.rover_svg)
+    object Saved: Screen("saved", R.string.saved, R.drawable.baseline_save_24)
 }
