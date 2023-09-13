@@ -1,9 +1,12 @@
 package com.androidabcd.roverinfo.data
 
+import com.androidabcd.roverinfo.db.MarsRoverSavedPhotoDao
 import com.androidabcd.roverinfo.domain.model.RoverPhotoUiModel
 import com.androidabcd.roverinfo.domain.model.RoverPhotoUiState
 import com.androidabcd.roverinfo.service.MarsRoverPhotoService
+import com.androidabcd.roverinfo.service.model.RoverPhotoRemoteModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -15,23 +18,52 @@ import javax.inject.Inject
  */
 
 class MarsRoverPhotoRepo @Inject constructor(
-    private val marsRoverPhotoService: MarsRoverPhotoService
+    private val marsRoverPhotoService: MarsRoverPhotoService,
+    private val marsRoverSavedPhotoDao: MarsRoverSavedPhotoDao
 ){
-    fun getMarsRoverPhoto(roverName: String, sol: String): Flow<RoverPhotoUiState> = flow{
-        try{
-            val networkResult = marsRoverPhotoService.getMarsRoberPhotos(roverName,sol)
-            emit(RoverPhotoUiState.success(networkResult.photos.map {
-                photo -> RoverPhotoUiModel(
-                    id = photo.id,
-                    imgSrc = photo.imgSrc,
-                    roverName = photo.rover.name,
-                    sol = photo.sol.toString(),
-                    earthDate = photo.earthDate,
-                    camerFullName = photo.camera.fullName
-                )
-            }))
-        }catch (throwable: Throwable){
-            emit(RoverPhotoUiState.Error)
+
+    private fun getAllRemoteMarsRoverPhotos(roverName: String, sol: String): Flow<RoverPhotoRemoteModel?> = flow {
+        try {
+            val networkResult = marsRoverPhotoService.getMarsRoverPhotos(
+                roverName.lowercase(),
+                sol
+            )
+            emit(networkResult)
+        }catch (throable: Throwable){
+            emit(null)
         }
+
+    }
+    fun getMarsRoverPhoto(roverName: String, sol: String): Flow<RoverPhotoUiState> = flow{
+       marsRoverSavedPhotoDao.allSavedIds(sol, roverName).combine(
+           getAllRemoteMarsRoverPhotos(roverName, sol)
+       ){
+           local, remote->
+           remote?.let { roverPhotoRemoteModel ->
+               RoverPhotoUiState.success(
+                   roverPhotoRemoteModel.photos.map { photo->
+                       RoverPhotoUiModel(
+                           id = photo.id,
+                           roverName = photo.rover.name,
+                           imgSrc = photo.imgSrc,
+                           sol = photo.sol.toString(),
+                           earthDate = photo.earthDate,
+                           camerFullName = photo.camera.fullName,
+                           isSaved = local.contains(photo.id)
+                       )
+                   }
+               )
+           }
+       }?: kotlin.run {
+           RoverPhotoUiState.Error
+       }
+    }
+
+    suspend fun savePhoto(roverPhotoUiModel: RoverPhotoUiModel){
+
+    }
+
+    suspend fun removePhoto(roverPhotoUiModel: RoverPhotoUiModel){
+
     }
 }

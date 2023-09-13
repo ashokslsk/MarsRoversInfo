@@ -21,5 +21,6 @@ data class RoverPhotoUiModel (
     val imgSrc: String,
     val sol: String,
     val earthDate: String,
-    val camerFullName: String
+    val camerFullName: String,
+    val isSaved:Boolean
 )

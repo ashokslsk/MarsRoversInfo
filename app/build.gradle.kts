@@ -58,6 +58,7 @@ dependencies {
     val retrofit_version = "2.9.0"
     val okhttpLoggingInterceptorVersion = "4.10.0"
     val coilVersion = "2.2.2"
+    val roomVersion = "2.5.2"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -74,6 +75,10 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
     implementation ("com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
+
+    //Room database
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")

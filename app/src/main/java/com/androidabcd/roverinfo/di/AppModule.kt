@@ -1,10 +1,14 @@
 package com.androidabcd.roverinfo.di
 
+import android.content.Context
+import com.androidabcd.roverinfo.db.MarsRoverSavedDatabase
+import com.androidabcd.roverinfo.db.MarsRoverSavedPhotoDao
 import com.androidabcd.roverinfo.service.MarsRoverInfoService
 import com.androidabcd.roverinfo.service.MarsRoverPhotoService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 /**
@@ -24,5 +28,9 @@ object AppModule {
     @Provides
     fun provideMarsRoverPhotoService(): MarsRoverPhotoService =
         MarsRoverPhotoService.create()
+
+    @Provides
+    fun providesMarsRoverSavedPhotoDao(@ApplicationContext context: Context): MarsRoverSavedPhotoDao =
+        MarsRoverSavedDatabase.getInstance(context).marsRoverSavedPhotoDao()
 
 }

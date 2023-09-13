@@ -1,7 +1,11 @@
 package com.androidabcd.roverinfo.ui.view
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,11 +33,12 @@ import com.androidabcd.roverinfo.domain.model.RoverPhotoUiModel
 @Composable
 fun PhotoList(
     modifier: Modifier,
-    roverPhotoUiModelList: List<RoverPhotoUiModel>){
+    roverPhotoUiModelList: List<RoverPhotoUiModel>,
+    onClick: (roverPhotoUiModel: RoverPhotoUiModel) -> Unit){
     Surface(color = MaterialTheme.colorScheme.background, modifier = modifier.fillMaxSize()){
         LazyColumn{
             items(count = roverPhotoUiModelList.size, itemContent = {index ->
-                photo(roverPhotoUiModel = roverPhotoUiModelList[index])
+                photo(roverPhotoUiModel = roverPhotoUiModelList[index], onClick)
             })
         }
     }
@@ -40,13 +46,25 @@ fun PhotoList(
 
 @Composable
 fun photo(
-    roverPhotoUiModel: RoverPhotoUiModel
+    roverPhotoUiModel: RoverPhotoUiModel,
+    onClick: (roverPhotoUiModel: RoverPhotoUiModel) -> Unit
 ){
-Card (modifier = Modifier.padding(16.dp)){
+Card (modifier = Modifier.padding(16.dp).clickable {
+    onClick
+}){
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(
-            text = roverPhotoUiModel.roverName,
-            modifier = Modifier.padding(16.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(painter = painterResource(
+                id = if (roverPhotoUiModel.isSaved) { R.drawable.baseline_save_24
+                }else{
+                    R.drawable.outline_save_24
+                }
+            ), contentDescription = "Save icon")
+            Text(
+                text = roverPhotoUiModel.roverName,
+                modifier = Modifier.padding(16.dp))
+        }
+
 
         AsyncImage(model = roverPhotoUiModel.imgSrc, contentDescription = "rover Photo", modifier = Modifier.height(300.dp))
         Text(text = stringResource(id = R.string.sol, roverPhotoUiModel.sol))
@@ -66,7 +84,9 @@ fun PhotoPreview(){
         imgSrc = "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/03943/opgs/edr/fcam/FLB_747545560EDR_F1040000FHAZ00337M_.JPG", 
         sol = "34", 
         earthDate = "2021-03-05", 
-        camerFullName = "Mast Camer zoom - Right"
-        
-    ))
+        camerFullName = "Mast Camer zoom - Right",
+        true
+    )){
+
+    }
 }

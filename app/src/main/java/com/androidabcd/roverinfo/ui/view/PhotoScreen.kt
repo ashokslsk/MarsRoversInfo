@@ -34,7 +34,8 @@ fun PhotoScreen(
             RoverPhotoUiState.Loading -> Loading()
             is RoverPhotoUiState.success -> PhotoList(
                 modifier = modifier,
-                roverPhotoUiModelList = roverPhotoUiState.roverPhotoUiModelList)
+                roverPhotoUiModelList = roverPhotoUiState.roverPhotoUiModelList,
+                onClick = {})
         }
     }
 }
